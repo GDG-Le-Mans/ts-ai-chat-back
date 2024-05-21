@@ -30,37 +30,19 @@ export class GroqService {
         model: 'llama3-70b-8192',
 	});
 
-	private readonly template = ChatPromptTemplate.fromMessages([
-		new SystemMessage('You are a helpful assistant!'),
-		new MessagesPlaceholder('history'),
-		HumanMessagePromptTemplate.fromTemplate('{input}'),
-	]);
+	// TODO 0: Implement chat prompt template
+	private readonly template;
 
 	constructor(private readonly configService: ConfigService, private readonly embeddingsService: EmbeddingsService) {}
 
 	private async buildRetrievalChain() {
-		const retriever = await this.embeddingsService.retriever();
-		const retrievalChain = retriever.pipe(formatDocumentsAsString);
-		const ragPrompt = ChatPromptTemplate.fromMessages([
-			new SystemMessage('You are a helpful assistant! You answer in french.'),
-			new MessagesPlaceholder('history'),
-			await pull<ChatPromptTemplate>("rlm/rag-prompt")
-		]);
-
-		return RunnablePassthrough.assign({
-			context: async (input: Record<string, any>) => {
-				return await retrievalChain.invoke(input.input)
-			},
-			question: (input: Record<string, any>) => input.input,
-			history: (input: Record<string, any>) => input.history,
-		})
-		.pipe(ragPrompt)
-		.pipe(this.groq)
-		.pipe(new StringOutputParser());
+		// TODO 6: Implement retrieval chain
+		return Promise.resolve(undefined);
 	}
 
 	private async buildChatChain() {
-		return Promise.resolve(this.template.pipe(this.groq).pipe(new StringOutputParser()))
+		// TODO 1: Implement chat chain
+		return Promise.resolve(undefined)
 	}
 
 	public async sendMessage(message: MessageDto, history: MessageDto[]) {

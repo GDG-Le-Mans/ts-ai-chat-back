@@ -23,7 +23,7 @@ export class EmbeddingsService {
 	}
 
     hasPdfs(): boolean {
-        return this.lookForPdfs().length > 0;
+        return false; // TODO 2: this.lookForPdfs().length > 0;
     }
 
 	private lookForPdfs(): string[] {
@@ -33,27 +33,17 @@ export class EmbeddingsService {
 	}
 
 	private async loadPdfs(): Promise<Document<Record<string, any>>[]> {
-		const files = this.lookForPdfs();
-		const documents: Document<Record<string, any>>[] = [];
-		for (const file of files) {
-			const loader = new PDFLoader(path.join('.', 'pdf', file));
-			documents.push(...(await loader.load()));
-		}
-		return documents;
+		// TODO 3: Implement pdf loader
+		return Promise.resolve([]);
 	}
 
 	async embed(): Promise<boolean> {
-		const docs = await this.loadPdfs();
-		const textSplitter = new RecursiveCharacterTextSplitter({
-			chunkSize: 1000,
-			chunkOverlap: 200,
-		});
-		const splits = await textSplitter.splitDocuments(docs);
-        await this.vectorStore.addDocuments(splits);
+		// TODO 4: Implement pdf embedding
         return true;
 	}
 
     async retriever(): Promise<BaseRetriever> {
-        return this.vectorStore.asRetriever();
+		// TODO 5: Implement retriever
+        return undefined;
     }
 }
